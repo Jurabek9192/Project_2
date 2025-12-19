@@ -24,4 +24,3 @@ The goal is to understand sales trends, customer behavior, and product performan
 
 ---
 
-## 📂 Project Structure
