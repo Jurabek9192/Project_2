@@ -1,3 +1,5 @@
+-- Creating Table to import dataset from csv file
+-- Создания таблица для загрузки данных
 CREATE TABLE superstore_train(
     row_id INTEGER,
     order_id VARCHAR(80),
@@ -19,29 +21,29 @@ CREATE TABLE superstore_train(
     sales numeric
 );
 
--- importing dates could not happen by default so we do it
-UPDATE superstore_train
-SET order_date=TO_DATE(order_date, 'DD/MM/YYYY');
+-- Changing date columns from text to date type
+-- Преобразование столбцов с датой из текстового формате в тип DATE
 
-UPDATE superstore_train
-SET ship_date=TO_DATE(ship_date, 'DD/MM/YYYY');
-
--- changing type of date columns
 ALTER TABLE superstore_train
 ALTER COLUMN order_date TYPE DATE
-USING order_date::DATE;
+USING TO_DATE(order_date, 'DD/MM/YYYY');
 
 ALTER TABLE superstore_train
 ALTER COLUMN ship_date TYPE DATE
-USING ship_date::DATE;
+USING TO_DATE(ship_date, 'DD/MM/YYYY');
 
 -- CHECKING TYPES
+-- Проверка типов данных
 SELECT superstore_train.order_date, superstore_train.ship_date
 FROM superstore_train
 LIMIT 10;
 
--- Checking imported data
+-- Verifing imported data
+-- Проверка загружtнных данных
+
 SELECT * FROM superstore_train;
 
--- Checking rows
+-- Counting rows
+-- Подсчёт строк
+
 SELECT COUNT(*) FROM superstore_train;
