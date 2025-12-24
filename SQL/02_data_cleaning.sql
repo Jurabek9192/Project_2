@@ -1,4 +1,5 @@
--- FINDING NULLS
+-- Checking for NULL values
+-- Поиск пропущенных знычений
 
 SELECT
     COUNT(*) FILTER ( WHERE s.customer_id IS NULL ) AS null_customer_id,
@@ -20,14 +21,18 @@ SELECT
     COUNT(*) FILTER ( WHERE s.sales IS NULL ) AS null_sales
 FROM superstore_train s ;
 
--- There are 11 postal codes are null but we do not use postal code so it can be left empty
+-- 11 postal codes are NULL, but we do not use them, so they can be left empty
+-- 11 почтовых индексов пустые, но мы их не используем, поэтому их можно оставить пустыми
 
--- Finding Problems
+-- Sales can not be less than zero, so we check for negative values
+-- Продажи не могут быть меньше нулю, поэтому проверяем данные
+
 SELECT
     COUNT(*) FILTER ( WHERE sales<0 )
 FROM superstore_train;
 
--- FINDING DUPLICATES
+-- Checking for duplicate records to ensure data quality
+-- Также необходимо проверить дубликаты
 
 SELECT
     order_id,
@@ -39,7 +44,8 @@ FROM superstore_train s
 GROUP BY order_id, product_id, sales, order_date
 HAVING COUNT(*)>1;
 
--- We found duplicate so we will check once again
+-- Duplicates were found, so we will check again
+-- Обнаружены дубликаты, поэтому выполняем повторную проверку
 
 SELECT *
 FROM superstore_train
@@ -54,4 +60,8 @@ ORDER BY order_id;
 -- Two exact duplicate transaction records were identified
 -- at the line-item level and removed to ensure accurate
 -- frequency and revenue calculations.
+-- Были выявлены два полностью идентичных транзакционных записи
+-- на уровне позиции и удалены для обеспечения точных
+-- расчётов частоты и выручки.
+
 DELETE FROM superstore_train WHERE row_id=3407;
